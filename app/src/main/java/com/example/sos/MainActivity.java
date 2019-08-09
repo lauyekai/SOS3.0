@@ -4,12 +4,14 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.location.Location;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.SoundEffectConstants;
 import android.view.View;
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Dialog myDialog;
     Button helpButton;
 
-    String fire_number,police_number,ambulance_number;
+    String fire_number,police_number,ambulance_number,Emergency_message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             fire_number = extras.getString("fire");
             police_number = extras.getString("police");
             ambulance_number = extras.getString("ambulance");
+            Emergency_message=extras.getString("message");
         }
 
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.siren);
@@ -75,18 +78,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(String.valueOf(phoneNo), null, message, null,null);
         }
-                /*Create the intent.
+
                 Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
                 // Set the data for the intent as the phone number.
                 smsIntent.setData(Uri.parse(phoneNo));
                 // Add the message (sms) with the key ("sms_body").
                 smsIntent.putExtra("sms_body", message);
                 // If package resolves (target app installed), send intent.
-                if (smsIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                if (smsIntent.resolveActivity(this.getPackageManager()) != null) {
                     startActivity(smsIntent);
                 } else {
                     Log.e(TAG, "Can't resolve app for ACTION_SENDTO Intent");
-                }*/
+                }
     }
     public void openMainActivity()
     {  Intent intent = new Intent(this,MainActivity.class);

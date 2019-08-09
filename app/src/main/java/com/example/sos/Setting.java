@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class Setting extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    String fire_Service_number,ambulance_service_number,police_service_number;
+    String fire_Service_number,ambulance_service_number,police_service_number,Emergency_message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +29,9 @@ public class Setting extends AppCompatActivity implements BottomNavigationView.O
 
         EditText  fire= (EditText)findViewById(R.id.fire_phone_number);
        fire_Service_number = fire.getText().toString();
+
+        EditText  message= (EditText)findViewById(R.id.SOS_Message);
+        Emergency_message = message.getText().toString();
 
         BottomNavigationView topView = findViewById(R.id.nav_view_top) ;
         topView.setOnNavigationItemSelectedListener(this);
@@ -46,6 +49,7 @@ public class Setting extends AppCompatActivity implements BottomNavigationView.O
         intent.putExtra("fire",fire_Service_number);
         intent.putExtra("ambulance",ambulance_service_number);
         intent.putExtra("police",police_service_number);
+        intent.putExtra("message",Emergency_message);
         startActivity(intent);
     }
     public void openContect()
