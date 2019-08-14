@@ -18,13 +18,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener  {
     Dialog myDialog;
     Button helpButton;
-
+    boolean check_siren,check_location;
     String fire_number,police_number,ambulance_number,Emergency_message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             police_number = extras.getString("police");
             ambulance_number = extras.getString("ambulance");
             Emergency_message=extras.getString("message");
+            check_siren=extras.getBoolean("check_siren");
+            check_location=extras.getBoolean("check_location");
         }
 
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.siren);
@@ -53,12 +56,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             @Override
             public void onClick(View view) {
-                sendSMS();
-                if (mp.isPlaying()) {
-                    mp.pause();
-                } else
-                    mp.start();
+                if(check_location==true)
+                {
+                    //sendSMS();
+                    Toast.makeText(getApplicationContext(),"send location", Toast.LENGTH_SHORT).show();
+                }
 
+                if (check_siren == true) {
+                    if (mp.isPlaying()) {
+                        mp.pause();
+                    } else
+                        mp.start();
+
+                }
             }
 
         });
@@ -79,17 +89,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             sms.sendTextMessage(String.valueOf(phoneNo), null, message, null,null);
         }
 
-                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-                // Set the data for the intent as the phone number.
-                smsIntent.setData(Uri.parse(phoneNo));
-                // Add the message (sms) with the key ("sms_body").
-                smsIntent.putExtra("sms_body", message);
-                // If package resolves (target app installed), send intent.
-                if (smsIntent.resolveActivity(this.getPackageManager()) != null) {
-                    startActivity(smsIntent);
-                } else {
-                    Log.e(TAG, "Can't resolve app for ACTION_SENDTO Intent");
-                }
+
     }
     public void openMainActivity()
     {  Intent intent = new Intent(this,MainActivity.class);
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
     public void openSetting()
     {  Intent intent = new Intent(this,Setting.class);
+
         startActivity(intent);
     }
 
